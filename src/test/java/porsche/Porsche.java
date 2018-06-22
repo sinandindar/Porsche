@@ -10,6 +10,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Porsche {
 
+	private static int c = 0;
+
 	public static void main(String[] args) throws InterruptedException {
 		WebDriverManager.chromedriver().setup();
 		WebDriver driver = new ChromeDriver();
@@ -21,9 +23,7 @@ public class Porsche {
 		driver.findElement(By.linkText("718")).click(); 
 
 		//4
-		String price = driver.findElement(By.xpath("//*[@id=\"m982120\"]/div[1]/div[2]/div[2]")).getText();
-		price = getNumbers(price);
-		price = price.substring(0, 5);
+		String price = getNumbers(driver.findElement(By.xpath("//*[@id=\"m982120\"]/div[1]/div[2]/div[2]")).getText()).substring(0, 5);
 
 		//5
 		String winHandleBefore = driver.getWindowHandle();
@@ -33,30 +33,24 @@ public class Porsche {
 		}
 
 		//6
-		String priceBase = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[1]/div[2]")).getText();
-		priceBase = getNumbers(priceBase);
+		String priceBase = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[1]/div[2]")).getText());
 		verify(price, priceBase);
 
 		//7
-		String priceForEquipment = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText();
-		priceForEquipment = getNumbers(priceForEquipment);
+		String priceForEquipment = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText());
 		verify(priceForEquipment, "0");
 
 		//8
-		String priceDelivery = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[3]/div[2]")).getText();
-		String priceTotal = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[4]/div[2]")).getText();
-		priceDelivery = "" + Integer.parseInt(getNumbers(priceDelivery));
-		priceTotal = "" + Integer.parseInt(getNumbers(priceTotal));
+		String priceDelivery = "" + Integer.parseInt(getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[3]/div[2]")).getText()));
+		String priceTotal = "" + Integer.parseInt(getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[4]/div[2]")).getText()));
 		verify(sumStrings(priceDelivery, priceBase), priceTotal);
 
 		//9-color
 		driver.findElement(By.xpath("//*[@id=\"s_exterieur_x_FJ5\"]/span")).click(); 
 
 		//10
-		String priceMiami = driver.findElement(By.xpath("//*[@id=\"s_exterieur_x_IAF\"]/div[2]/div[1]/div/div[2]")).getText();
-		priceForEquipment = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText();
-		priceMiami = getNumbers(priceMiami);
-		String previousEq = priceForEquipment = getNumbers(priceForEquipment);
+		String priceMiami = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_exterieur_x_IAF\"]/div[2]/div[1]/div/div[2]")).getText());
+		String previousEq = priceForEquipment = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText());
 		verify(priceMiami, priceForEquipment);
 
 		//11
@@ -68,7 +62,7 @@ public class Porsche {
 		wheels.get(3).click();
 
 		//13
-		String priceWheels = driver.findElement(By.xpath("//*[@id=\"s_exterieur_x_IRA\"]/div[2]/div[1]/div/div[2]")).getText();
+		String priceWheels = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_exterieur_x_IRA\"]/div[2]/div[1]/div/div[2]")).getText());
 		previousEq = verifyEquipment(previousEq, priceWheels, driver);
 
 		//14
@@ -80,7 +74,7 @@ public class Porsche {
 		driver.findElement(By.cssSelector("#s_interieur_x_PP06")).click();
 
 		//16
-		String priceSeats = driver.findElement(By.xpath("//*[@id=\"seats_73\"]/div[2]/div[1]/div[3]/div")).getText();
+		String priceSeats = getNumbers(driver.findElement(By.xpath("//*[@id=\"seats_73\"]/div[2]/div[1]/div[3]/div")).getText());
 		previousEq = verifyEquipment(previousEq, priceSeats, driver);
 
 		//17
@@ -95,7 +89,7 @@ public class Porsche {
 		driver.findElement(By.xpath("//*[@id=\"vs_table_IIC_x_PEKH_x_c01_PEKH\"]")).click();
 
 		//20
-		String priceTrim = driver.findElement(By.xpath("//*[@id=\"vs_table_IIC_x_PEKH\"]/div[1]/div[2]/div")).getText();
+		String priceTrim = getNumbers(driver.findElement(By.xpath("//*[@id=\"vs_table_IIC_x_PEKH\"]/div[1]/div[2]/div")).getText());
 		previousEq = verifyEquipment(previousEq, priceTrim, driver);
 
 		//21
@@ -108,18 +102,16 @@ public class Porsche {
 
 		//23
 		driver.findElement(By.cssSelector("#vs_table_IMG_x_M250_x_c11_M250")).click();
-		String price7Speed = driver.findElement(By.xpath("//*[@id=\"vs_table_IMG_x_M250\"]/div[1]/div[2]/div")).getText();
+		String price7Speed = getNumbers(driver.findElement(By.xpath("//*[@id=\"vs_table_IMG_x_M250\"]/div[1]/div[2]/div")).getText());
 		Thread.sleep(500);
 
 		//24
 		scrollArea = driver.findElement(By.cssSelector("#IIN_subHdl"));
 		scroll_Page(scrollArea ,100, driver);
 		driver.findElement(By.cssSelector("#vs_table_IMG_x_M450_x_c91_M450")).click();
-		String priceCeramic = driver.findElement(By.xpath("//*[@id=\"vs_table_IMG_x_M450\"]/div[1]/div[2]/div")).getText();
+		String priceCeramic = getNumbers(driver.findElement(By.xpath("//*[@id=\"vs_table_IMG_x_M450\"]/div[1]/div[2]/div")).getText());
 
 		//25
-		price7Speed = getNumbers(price7Speed);
-		priceCeramic = getNumbers(priceCeramic);
 		previousEq = verifyEquipment(previousEq, sumStrings(price7Speed, priceCeramic), driver);
 
 		//26
@@ -127,31 +119,24 @@ public class Porsche {
 	}
 
 	public static boolean verify(String first, String second){
-		int firstNum = Integer.parseInt(first);
-		int secondNum = Integer.parseInt(second);
-		if(firstNum == secondNum) {
-			System.out.println("Verified!");
+		if(first.equals(second)) {
+			System.out.println(++c + ". Verified! - " + first + " = " + second);
 			return true;
 		}
-		System.out.println("Not Verified!");
+		System.out.println(++ c + ". Not Verified! - " + first + " != " + second);
 		return false;
 	}
 	
 	public static String verifyEquipment(String previousEq, String item, WebDriver driver) {
-		String equipment = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText();
-		item = getNumbers(item);
-		equipment = getNumbers(equipment);
+		String equipment = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText());
 		verify(sumStrings(previousEq, item), equipment);
 		return sumStrings(previousEq, item);
 	}
 
 	public static void verifyTotal(String priceBase, String priceForEquipment, String priceDelivery, String priceTotal, WebDriver driver) {
-		priceForEquipment = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText();
-		priceDelivery = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[3]/div[2]")).getText();
-		priceTotal = driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[4]/div[2]")).getText();
-		priceForEquipment = getNumbers(priceForEquipment);
-		priceDelivery = "" + Integer.parseInt(getNumbers(priceDelivery));
-		priceTotal = "" + Integer.parseInt(getNumbers(priceTotal));
+		priceForEquipment = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[2]/div[2]")).getText());
+		priceDelivery = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[3]/div[2]")).getText());
+		priceTotal = getNumbers(driver.findElement(By.xpath("//*[@id=\"s_price\"]/div[1]/div[4]/div[2]")).getText());
 		verify(sumStrings(sumStrings(priceBase, priceForEquipment), priceDelivery), priceTotal);
 	}
 
@@ -160,9 +145,7 @@ public class Porsche {
 	}
 
 	public static String sumStrings(String first, String second){
-		int firstNum = Integer.parseInt(first);
-		int secondNum = Integer.parseInt(second);
-		return String.valueOf(firstNum + secondNum);
+		return String.valueOf(Integer.parseInt(first) + Integer.parseInt(second));
 	}
 
 	public static boolean scroll_Page(WebElement webelement, int scrollPoints, WebDriver driver){
